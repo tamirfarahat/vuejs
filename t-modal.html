@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>t-modal</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="../scripts/vue.js"></script>
+        <script src="../scripts/closable.js" ></script>
+
+        <style>
+            html,body{
+                width:100%;
+                height:100%;
+
+            }
+
+            .flatbutton{
+                border: 1px #aaaaaa solid;
+                margin: 3px;
+                padding: 6px;
+                background-color: bisque;
+                border-radius: 4px;
+                min-width: 60px;
+            }
+
+            .flatbutton:hover{
+                background-color: burlywood;
+            }
+            .flatbutton:focus{
+                border: 1px #000 solid;
+            }
+
+
+
+            .formTable{
+                margin: 20px;
+                font-family:"Google Sans", sans-serif;
+                font-size:15px;
+                font-weight:500;
+            }
+            .formTable>tbody>tr>td{
+                height: 30px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                white-space: nowrap;
+            }
+
+            .formTable>tbody>tr>td>input{
+                width:400px;
+                height: 25px;
+            }
+
+        </style>
+        <style id="__STYLE__">
+
+
+            .modal {
+                display: flex;
+                width: 100%;
+                height: 100%;
+                border: 1px solid black;
+                justify-content: center;
+
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                left: 0;
+                top: 0;
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+
+            }
+
+            .modal>div {
+                box-sizing: border-box;
+                max-width: 80%;
+                max-height: 80%;
+                align-self: center;
+                background-color: #fefefe;;
+                display: flex;
+                flex-flow: column;
+
+                padding: 0px;
+                border-radius: 10px;
+                position: relative;
+
+
+            }
+
+            .modal>div>span {
+                color: #aaaaaa;
+                position: absolute;
+                right:10px;
+                top:8px;
+
+                font-size: 28px;
+                font-weight: bold;
+
+            }
+
+            .modal>div>span:hover,
+            .modal>div>span:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+
+            .modal>div>header{
+                background-color: slateblue;
+                height:60px;
+                border-top-right-radius: 10px;
+                border-top-left-radius: 10px;
+                padding: 4px;
+            }
+
+            .modal>div>div {
+                flex: 1;
+                overflow-y: auto;
+            }
+
+            .modal>div>footer{
+                background-color: slateblue;
+                height:60px;
+                border-bottom-right-radius: 10px;
+                border-bottom-left-radius: 10px;
+                padding: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+            }
+
+        </style>
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <t-modal  :sor="sor" title="test modal window">
+            <div slot="main">
+                <table class="formTable">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Project Title</td>
+                            <td>:</td>
+                            <td><input vbind="sor.projectTitle" type="text"></td>
+                        </tr>
+
+                        <tr>
+                            <td>General Location</td>
+                            <td>:</td>
+                            <td><input type="text"></td>
+                        </tr>
+
+
+                        <tr>
+                            <td>PMP Numbers</td>
+                            <td>:</td>
+                            <td><input type="text"></td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Project Start Date</td>
+                            <td>:</td>
+                            <td><input type="text"></td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Project End Date</td>
+                            <td>:</td>
+                            <td><input type="text"></td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Asset Holders</td>
+                            <td>:</td>
+                            <td><input type="text"></td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Comments</td>
+                            <td>:</td>
+                            <td><input type="text"></td>
+                        </tr>
+
+                        <tr>
+                            <td>Related Documents</td>
+                            <td>:</td>
+                            <td><input type="text"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div slot="footer">
+
+                <button class="flatbutton" @click="sor=null" >Save</button> 
+                <button class="flatbutton">Cancel</button> 
+
+            </div>
+        </t-modal>
+    </div>
+
+    <div id="__TEMPLATE__" style="display: none">
+        <div  class="modal">
+            <div v-if="showDialog"  >
+                <span class="close">&times;</span>
+                <header>
+                    <div style='padding-left: 10px; height:100%;color:white;display:block;font-family:"Google Sans", sans-serif;font-size:20px;font-weight:500;display:flex'><div style="align-self: center;">{{title}}</div></div>
+                </header>
+                <div class="content">
+                    <div class="modalbody">
+                        <slot name="main"></slot>
+                    </div>
+                </div>
+                <footer>
+                    <slot name="footer"></slot>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+
+    <script id="__COMPONENT__">
+
+        Vue.component('t-modal', {
+            data: function () {
+                return {
+                    showDialog: false
+                };
+            },
+            props: {
+
+                title: {
+                    type: String,
+                    default: "Title here"
+                },
+                closebutton: {
+                    type: Boolean,
+                    default: false
+                },
+                cssclass: {
+                    type: String,
+                    default: "modal"
+                },
+                sor: {
+                    type: Object,
+                    default: null
+                }
+            },
+            methods: {
+                close: function () {
+
+                }
+            },
+            template2: '#__TEMPLATE__',
+            template: "<div class=\"modal\">\r\n            <div>\r\n                <span class=\"close\">&times;<\/span>\r\n                <header>\r\n                    <div style=\'padding-left: 10px; height:100%;color:white;display:block;font-family:\"Google Sans\", sans-serif;font-size:20px;font-weight:500;display:flex\'><div style=\"align-self: center;\">Create new SOR<\/div><\/div>\r\n                <\/header>\r\n                <div class=\"content\">\r\n                    <div class=\"modalbody\">\r\n                        <slot name=\"main\"><\/slot>\r\n                    <\/div>\r\n                <\/div>\r\n                <footer>\r\n                    <slot name=\"footer\"><\/slot>\r\n                <\/footer>\r\n            <\/div>\r\n        <\/div>"
+        });
+
+    </script>
+
+    <script id="__TEST__">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                sor: {projectTitle:"ECM Foundation"}
+            }
+        });
+
+
+        function raiseSor() {
+            app.sor = {projectTitle:"ECM Foundation"};
+        }
+
+
+    </script>
+
+    <button onclick="raiseSor()">Show</button>
+
+
+</body>
+</html>
