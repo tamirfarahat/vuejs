@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>t-select</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="../scripts/vue.js"></script>
+        <script src="../scripts/closable.js" ></script>
+
+        <style id="__STYLE__">
+
+            .tselect{
+                position:relative;
+                width:400px;
+                border:0px;
+                display: flex;
+                flex-flow: column;
+                align-items: stretch;
+                height: 30px;
+
+            }
+            .tselect input{
+                flex: 1;
+                padding-left: 3px;
+                border: 1px solid #ccc;
+                xborder-radius: 4px;
+            }
+
+            .tselect input:focused{
+                border: 1px solid lightblue;
+            }
+            .tselect .picker{
+                display: inline-block;
+                position: absolute;
+                top:100%;
+                left:0px;
+                width: 100%;
+
+                display: flex;
+                flex-flow: column;
+                border:0px ;
+                z-index: 100;
+
+
+
+
+            }
+
+            .tselect .picker>div{
+                border:1px solid #ccc;
+                border-top:0px;
+
+
+            }
+
+
+            .filter{
+                text-align: center;
+                background: linear-gradient(to bottom, rgba(222,239,255,1) 0%,rgba(152,190,222,1) 100%);
+
+            }
+
+            .filter>input{
+                width:80%;
+                border-radius: 4px;
+                border: 1px solid #ccc;
+                height: 20px;
+                margin: 3px;
+
+            }
+            
+            .options{
+                flex: 1;
+                overflow: auto;
+                height:200px;
+
+
+            }
+
+
+
+            .tselect .option{
+                white-space: nowrap;
+                display:block;
+                line-height: 15px; 
+                padding: 5px 0 5px 10px; 
+                font-size: 12px; 
+                font-weight: bold; 
+                font-family: arial, sans-serif;
+                list-style: none;
+                margin: 0
+
+            }
+
+            .optionContainer{
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px;
+                padding:4px;
+                background: linear-gradient(to bottom, rgba(222,239,255,1) 0%,rgba(152,190,222,1) 100%);
+            }
+
+
+            .tselect .option:hover{
+                color: #f6f6f6;
+                background: #4096ee;
+            }
+
+
+
+
+        </style>
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <t-select :options="options"></t-select>
+        <br/>
+        <t-select :options="options"></t-select>
+        <br/>
+        <t-select :options="options"></t-select>
+
+
+    </div>
+
+    <div id="__TEMPLATE__" style="display: none">
+        <div class="tselect" >
+            <input ref="valueTextbox" readonly=""  v-model="textValue" @focus="onTextFocus" @keydown="onTextKeyDown" type="text" value="aa" />
+            <input  v-show="false" @blur="onSearchTextBlur" type="text" />
+            <div v-show="showPicker" class="picker" v-closable="{exclude: ['valueTextbox'],handler: 'onClickaway'}">
+                <div class="filter" ><input placeholder="Search" ref="filterTextBox" v-model="filterString"  /></div>
+                <div class="optionContainer" >
+                    <div class="options">
+                        <div @click="onOptionClick(index)" class="option" v-for="(option,index) in filteredOptions">{{option}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script id="__COMPONENT__">
+
+        Vue.component('t-select', {
+            data: function () {
+                return {
+                    filterString: "",
+                    textValue: "tamir",
+                    showFilter: false,
+                    showPicker: false
+
+                };
+            },
+            props: {
+                options: Array
+            },
+            methods: {
+                onTextFocus: function () {
+                    if (this.showPicker) {
+                        return;
+                    }
+                    this.showPicker = true;
+                    this.$nextTick(function () {
+                        //this.$refs.filterTextBox.focus();
+                    });
+
+                },
+                onTextKeyDown: function () {
+                    //this.showFilter = true;
+                },
+                onSearchTextBlur: function () {
+                    //this.showFilter = false;
+                    //this.showPicker=false;
+                },
+                onOptionClick: function (index) {
+                    this.textValue = this.filteredOptions[index];
+                    this.showPicker = false;
+                }
+                ,
+                onFilter: function () {
+                    this.textValue = this.options[index];
+                    this.showPicker = false;
+                },
+                onClickaway: function () {
+                    console.log("onClickaway:");
+                    this.showPicker = false;
+
+                }
+            },
+            computed: {
+                // a computed getter
+                filteredOptions: function () {
+                    if (!this.filterString) {
+                        return this.options;
+                    } else {
+                        var _this = this;
+                        return this.options.filter(function (el) {
+                            return ("" + el).toLowerCase().indexOf(_this.filterString.toLocaleLowerCase()) >= 0;
+                        });
+                    }
+                }
+            },
+            template: '#__TEMPLATE__'
+        });
+
+    </script>
+
+    <script id="__TEST__">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                options: ["A sf sdf sdf sdf sdf", "B", "C", "A", "B", "C", "A", "B", "C", "A", "B", "C", "A", "B", "C", "A", "B", "C", "A", "B", "C", "A", "B", "C", "A", "B", "C", "A", "B", "C"]
+            }
+        });
+
+        for (var i = 0; i < 100; i++) {
+            app.options.push(i);
+        }
+
+
+
+    </script>
+
+
+
+</body>
+</html>
