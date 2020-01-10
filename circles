@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+
+            .circlecontainer{
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                flex-direction: row;
+                background-color: #ccc;
+                width:90%;
+                height: 600px;
+                //padding-right: 10%;
+                //padding-left: 10%;
+            }
+            .circle {
+                width: 300px;
+                height: 300px;
+                border-radius: 50%;
+                font-size: 40px;
+                color: #fff;
+                text-align: center;
+                background: #000;
+                cursor: pointer;
+                transition: all 0.5s ease;
+                white-space: nowrap;
+                overflow: hidden;
+                display: inline-block;
+               
+               
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+            }
+
+            .circle:hover {
+                background-color: green;
+                width: 330px;
+                height: 330px;
+            }
+
+            .circle>div{
+                margin: 0 auto;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <div class="circlecontainer">
+
+            <div class="circle"><div>SOR submission</div></div>
+            <div class="circle"><div>Gate Deliverable<br/>submission </div></div>
+            <div class="circle"><div>Search </div></div>
+
+        </div>
+        <INPUT STYLE="WIDTH:300PX;"/>
+
+    </body>
+</html>
